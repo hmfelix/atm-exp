@@ -1,0 +1,466 @@
+\documentclass[12pt]{extarticle} % para aumentar tamanho fonte
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr} % para add cabeçalho
+\usepackage{titling} % para funcionar cabeçalho
+\usepackage[a4paper, margin=3cm]{geometry} % para reduzir margem
+\usepackage{amsmath} % para equação seguindo sinal de igual no mesmo lugar
+                     % e também circundar eqs com um retangulo
+\usepackage{amssymb} % para símbolo dos reais
+\usepackage{xcolor} % para colorir e marcar texto
+\usepackage[portuguese]{babel} % para data automática em português
+
+% para negritar o parentese e o numero da numeracao automática das equações:
+\usepackage{mathtools} 
+\makeatletter
+\renewcommand{\tagform@}[1]{\maketag@@@{\textbf{(\ignorespaces#1\unskip\@@italiccorr)}}} % Redefina o comando \tagform@
+\makeatother
+
+
+% cabeçalho primeira página:
+\fancypagestyle{firstpage}{
+    \fancyhf{}
+    \fancyhead[L]{
+        Universidade de São Paulo\\
+        Instituto de Física\\
+        Bacharelado em Física - Noturno\\
+        Disciplina: 4302401 - Mecânica Estatística - 1º/2024\\
+        Professor: André de Pinho Vieira
+    }
+    \fancyfoot[C]{\thepage}
+}
+
+% sem cabeçalho demais páginas
+\fancypagestyle{otherpages}{
+    \fancyhf{}
+    \fancyfoot[C]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+% titulo:
+\pretitle{\begin{center}\LARGE}
+\posttitle{\par\end{center}\vskip 0.5em}
+\title{
+    Estimativa do tempo de perda de 99\% da atmosfera terrestre e lunar via modelo exponencial\\
+    \vspace{2mm}
+    \large
+    (Resposta à Questão 10 da Lista 4)
+}
+\author{
+    Henrique Felix de Souza Machado\\
+    Nº USP: 11554214
+}
+\date{\today}
+
+
+
+
+
+
+% documento
+\begin{document}
+
+\maketitle
+\thispagestyle{firstpage}
+\pagestyle{otherpages}
+
+
+RESUMO
+
+
+
+
+
+\section{Reconhecimento}
+
+
+
+
+
+\section{Introdução}
+
+Tomarei como base uma série de resultados obtidos nas notas de aula do professor, para os quais não fornecerei demonstração. Tentarei demonstrar todos os demais resultados.
+
+
+
+
+
+
+\section{Enunciado da questão}
+
+\begin{itshape}
+\textbf{(Esta questão é um desafio. Caso a resolva, apresente uma solução em
+forma de um relatório de pesquisa e defenda sua solução em uma entrevista, você pode ganhar uma bonificação na nota da terceira prova.)}
+\\Um corpo celeste como um planeta ou um satélite natural que possua atmosfera perde constantemente moléculas dessa atmosfera para o espaço, simplesmente pelo fato de que em um gás sempre há moléculas com velocidades maiores do que a velocidade de escape do campo gravitacional do corpo.
+\\(a) Com base nesse fato, estime o tempo necessário para que a Terra perca uma fração de 99\% de sua atmosfera. (Não se preocupe em ser excessivamente preciso. Uma estimativa da ordem de grandeza desse tempo é suficiente. Você vai precisar pesquisar dados e fazer diversas hipóteses, que devem ser claramente explicitadas.)
+\\(b) Uma das hipóteses mais aceitas para a formação da Lua é a de que ela se desprendeu da Terra primitiva como consequência da colisão de um outro corpo celeste de dimensões comparáveis às da Terra. Nesse caso, é razoável supor que a Lua primitiva também tivesse uma atmosfera. Adaptando o cálculo do item anterior, estime o tempo que foi necessário para que a Lua perdesse 99\% de sua atmosfera original.
+\end{itshape}
+
+
+
+
+
+
+\section{Hipóteses e equações iniciais}
+
+Na resposta aqui proposta, considero a atmosfera como um \textbf{gás ideal}, \textbf{monoatômico}, e \textbf{não interagente}.
+
+\par Escolho aqui trabalhar com o  \textbf{limite clássico}, para o qual \textcolor{red}{DESCREVER n >> 1E JUSTIFICAR}. Nesse limite, cada molécula tem ao todo \textbf{6 graus de liberdade}: 3 de posição $\vec{r}=(r_x, r_y, r_z)$ e 3 de momento $\vec{p}$, aqui mais convenientemente descrito através da velocidade $\vec{v}=(v_x,v_y,v_z)$.
+
+\par Considero também que toda a atmosfera se encontra sob a atuação de um campo gravitacional aproximadamente constante $g$. Essa hipótese não é exatamente verdade para a faixa de atmosfera considerada, do nível do mar até $100$km de altitude
+
+\par As notas de aula trazem o cálculo da distribuição de probabilidades associadas aos graus de liberdade das moléculas de um gás nessas condições. Primeiramente, as notas permitem concluir que essa distribuição pode ser fatorada em dois componentes estatisticamente independentes: um para a distribuição das velocidades e outro para a distribuição das posições.
+
+\par O componente relativo às velocidades, i.e., a \textbf{distribuição de Maxwell das velocidades moleculares}, tem a forma
+
+\begin{equation}
+    f(\vec{v})\,d^3\vec{v} = \left(\frac{m}{2\pi k_BT}\right)^{\frac{3}{2}}\,e^{-\frac{mv^2}{2k_BT}}\,d^3\vec{v}
+\label{Mw_v}
+\end{equation}
+
+\noindent, onde $m$ é a massa da molécula em questão, $k_B$ é a constante de Boltzmann, $T$ é a temperatura do gás, $\vec{v}$ é a variável aleatória da velocidade (vetorial) da molécula, e $v$ é o módulo deste vetor aleatório.
+
+\par Conforme registrado nas notas de aula, a mesma distribuição pode ser usada para descrever gases com moléculas mais complexas que moléculas monoatômicas, desde que a velocidade considerada seja a do centro de massa. É o que faço aqui, pois considero \textbf{uma atmosfera composta inteiramente por nitrogênio molecular gasoso} (N$_2$). Essa hipótese se baseia no fato de que \textcolor{red}{JUSTIFICAR: (1) pesquisar composição da atm; (2) mostrar que massa atomica e raio são parecidos - mesma ordem de grandeza}.
+
+\par O outro componente da distribuição dos graus de liberdade das moléculas, relativo à posição, também foi desenvolvido nas notas de aula, e também traz algumas hipóteses fundamentais. Seja $\beta=(k_BT)^{-1}$ e $mgz$ o potencial gravitacional de uma partícula a uma altura $z$ do solo, então a distribuição de probabilidades da posição das moléculas na atmosfera é dada por
+
+$$f_r(\vec{r})=\frac{e^{-\beta mgz}}{\int e^{-\beta mgz} \, d^3 \vec{r} }$$
+
+\textcolor{red}{PQ AQUI NÃO TEM A DIFERENCIAL EM AMBOS OS LADOS??}
+
+(Ao longo dessas notas, uso $\int$ como sinônimo da integral definida nos limites de integração de todo o domínio do integrando, que ficam implícitos.)
+
+De início, vale notar que essa distribuição, quando ponderada pelo número total $N$ de moléculas no gás, é igual à densidade numérica de moléculas $n(\vec{r})$. As notas de aula trabalham esse ponto até chegar à seguinte relação:
+\begin{equation}
+    n(\vec{r})=n_0 \, e^{-\frac{mg}{k_BT}z}
+\label{densidade}
+\end{equation}
+
+\noindent , em que $n_0$ é a densidade numérica	de moléculas na superfície.
+
+\par É de se notar que todas essas relações dependem de haver uma temperatura bem definida para o gás, o que implica que \textbf{a temperatura deve ser aproximadamente constante em todos os pontos}. Isso não é condizente com a atmosfera da Terra, pois existem (i) mudanças na temperatura média da atmosfera ao longo do tempo e, dado qualquer momento de tempo, (ii) gradientes horizontais de temperatura (ex.: mais quente nos trópicos e mais frio nos pólos) e (iii) um gradiente vertical bem conhecido pelo qual a temperatura sobe em camadas de maior absorção de radiação solar (superfície, camada de ozônio e ionosfera) e desce nas camadas intermediárias \textcolor{red}{REFERENCIAS PARA 1, 2 E 3}. Quanto aos dois últimos, nota-se que o gradiente de temperatura está dentro da mesma ordem de magnitude (entre \colorbox{yellow}{$2$ e $4\times 10^2$ K}), de modo que não espero que essa hipótese influencie substancialmente o resultado, e tomo a média ponderada da temperatura da atmosfera como base. 
+
+\par Justifico a temperatura constante por uma hipótese de \textbf{influxo médio de energia solar aproximadamente neutro} ao longo dos anos (\textcolor{red}{REF DIZENDO QUE A MAIOR PARTE DA ENERGIA INCOMING VEM DO SOL?}). Assim, mesmo que a perda de atmosfera e a radiação de corpo negro impliquem perda de energia, o sistema sempre está em média com um balanço neutro de energia térmica, constantemente reposto pelo Sol e redistribuído em tempo de equilibração hábil. À exceção desse influxo, considero a Terra um \textbf{sistema isolado a fluxos de fora para dentro}, significando que não há recepção de matéria do exterior (p.ex., asteróides não caem na atmosfera).
+
+\par Acompanhados da hipótese de temperatura igualmente distribuída vêm, ainda, uma série de \textbf{pressupostos sobre o comportamento da atmosfera}. Nesse sentido, desprezo aqui toda e qualquer dinâmica interna adicional, tais como correntes de convecção, gradientes não-verticais de pressão, e outros fenômenos de mecânica de fluidos e do clima da Terra.
+
+\par Também tomo como pressuposto que a Terra é \textbf{geológica e biologicamente inerte} durante o período estudado, implicando que estão ausentes quaisquer efeitos de recomposição da atmosfera por atividade vulcânica, doação de energia geotérmica, forças de maré, mudança de composição da atmosfera ou mudanças climáticas (incluindo aquecimento global antropogênico), etc.
+
+\textcolor{red}{estudar um pouco essas últimas hipóteses e pensar em ordem de magnitude, justificar}
+
+\par Por fim, adoto uma \textbf{configuração espacial} tal que: (i) a Terra é considerada uma esfera, (ii) a casca esférica representada pela atmosfera é esticada em um paralelepípedo de área inferior $A$ igual à área da superfície esférica mais interior dessa casca, e (iii) a atmosfera sobe até $100$ km de altitude. Quanto a (i), uso o raio médio da Terra para mitigar os efeitos dessa aproximação - de todo modo, como o raio máximo (no equador) é cerca de $~0,34\%$ maior que o raio mínimo (polar)\textcolor{red}{REF}, considero uma aproximação desprezível. Por sua vez, (ii) permite que a distância radial seja convertida em uma coordenada $z$ de altura e posso definir coordenadas $x$ e $y$ que se movem tangencialmente à superfície da esfera. Para fins práticos, a casca esférica da atmosfera é convertida em uma caixa de bordas retas e perpendiculares entre si. Como se sabe do jacobiano de uma transformação como essa, existe uma distorção na área $A$ conforme a altura radial muda, mas no trecho de $100$ km essa mudança é de apenas $~1,57\%$, o que considero uma boa aproximação \textcolor{red}{(REF raios e abrir contas em algum lugar, se pá remeter à seção de resultados numéricos)}. Isso evita o recálculo da nova área de casca esférica a cada passo da simulação. (Adoto a convenção de que $z=0$ na superfície da Terra e sobe nos valores positivos conforme nos afastamos radialmente do centro da Terra (alturas maiores).) Já quanto a (iii), a densidade numérica dada pela \textbf{Equação (\ref{densidade})} mostra que, em uma camada qualquer da atmosfera entre $z=a$ e $z=b$, há um número $N$ de partículas tal que
+
+\begin{align}
+    N &= \iiint_{a}^{b}n(\vec{r})\,d^3\vec{r} \notag \\
+        &=n_0\int dx \int dy \int_{a}^{b} e^{-\frac{mg}{k_BT}z}dz \notag \\
+        &=n_0A\frac{k_BT}{mg}\left(e^{-\frac{mg}{k_BT}a}-e^{-\frac{mg}{k_BT}b}\right)
+\label{N_a_b}
+\end{align}
+
+
+Assim, na camada inferior aqui considerada (entre $0$ e $100$ km = $10^5$m), temos
+
+\begin{equation}
+    N_1 = n_0A\frac{k_BT}{mg}\left(1-e^{-\frac{mg}{k_BT}10^5}\right)
+\label{N_1}
+\end{equation}
+
+\noindent moléculas, enquanto na camada exterior (de $100$ $\rightarrow\infty$ km), temos
+
+$$N_2 = n_0A\frac{k_BT}{mg}\left(e^{-\frac{mg}{k_BT}10^5}\right)$$
+
+Comparando os dois números, e sabendo que $\mathcal{O}(mg/k_BT)\!=\!10^{-4}$ \textcolor{red}{REF OU REMETER A SEÇÃO}, vemos que a camada externa possui
+
+$$\frac{N_2}{N_1} = \frac{e^{-\frac{mg}{k_BT}10^5}}{1-e^{-\frac{mg}{k_BT}10^5}} = \frac{1}{e^{\frac{mg}{k_BT}10^5}-1}\approx\frac{1}{e^{10^{-4}\cdot10^5}-1}\approx\frac{1}{e^{10}-1}\approx 0,005\%$$
+
+\noindent do número de partículas da camada inferior, o que nos indica que a faixa dos primeiros $100$ km de atmosfera dá conta de quase toda a sua massa e fornece uma boa aproximação.
+
+
+
+
+\section{Abordagem computacional}
+
+
+\textcolor{red}{descrever o algoritmo}
+
+
+
+\section{Obtenção de resultados necessários}
+
+\subsection{Distribuição das componentes cartesianas das velocidades}
+
+A distribuição de Maxwell para velocidades moleculares (\textbf{Equação (\ref{Mw_v})}) tem a forma de um meio isotrópico onde não existe correlação entre direções, o que implica independência estatística mútua. Assim, é de se supor que a distribuição conjunta $f(\vec{v}) \, d^3 \vec{v} = f(v_x,v_y,v_z) \, dx \, dy \, dz$ seja fatorável em cada coordenada. Portanto, se denotarmos por $i$ a coordenada de interesse e por $j$ e $k$ as demais coordenadas, é de se esperar que $f(\vec{v})\, d^3\vec{v} = \left[f_i(v_i)\, di\right] \left[f_j(v_j)\, dj \right]\left[f_k(v_k)\, dk\right]$. Neste tópico, comprovo esse resultado.
+
+Por marginalização, temos que
+
+\begin{align}
+f_i(v_i) dv_i &= \left( \iint f(\vec{v}) \, dv_j dv_k \right) dv_i \notag \\
+&= \left[ \iint \left(\frac{m}{2\pi k_BT}\right)^{\frac{3}{2}} 
+    e^{-\frac{m}{2k_BT}(v_i^2+v_j^2+v_k^2)} dv_j dv_k \right] dv_i \notag \\
+&= \left(\frac{m}{2\pi k_BT}\right)^{\frac{3}{2}} 
+    \left[
+        \left(
+            \int e^{-\frac{m}{2k_BT}v_j^2} dv_j \int  e^{-\frac{m}{2k_BT}v_k^2} dv_k
+        \right)
+         e^{-\frac{m}{2k_BT}v_i^2} dv_i 
+    \right] \notag \\
+&= \left(\frac{m}{2\pi k_BT}\right)^{\frac{3}{2}} \frac{2\pi k_BT}{m} \, e^{-\frac{m}{2k_BT}v_i^2} dv_i \label{temp_f_i}
+\end{align}
+
+\noindent , sendo que na última passagem faço uso do resultado conhecido e amplamente usado nas notas de aula da integral gaussiana
+
+$$\int_{-\infty}^{\infty}e^{-ax^2}\,dx = \sqrt{\frac{\pi}{a}}$$
+
+Vale notar que o uso dos limites de integração em $\pm \infty$ é uma aproximação, pois fisicamente só faria sentido ter limites na velocidade da luz $\pm c$. Essa escolha foi feita por dois motivos: (i) a distribuição de Maxwell para as velocidades moleculares é normalizada para limites no infinito e (ii) a probabilidade de encontrar uma partícula com $v_i \in (\, c\, ,+\infty)$ é extremamente baixa, dada por 
+
+\textcolor{red}{CALCULAR}
+
+Simplificando o resultado obtido em \textbf{(\ref{temp_f_i})}, chega-se a:
+
+\begin{equation}
+\boxed{
+    \, \, f_i(v_i) dv_i = \sqrt{\frac{m}{2\pi k_BT}} \, \, e^{-\frac{m}{2k_BT}v_i^2} dv_i \, \,
+\label{f_i}
+}
+\end{equation}
+
+Com isso, verifica-se que $f(\vec{v})\, d^3\vec{v} = \left[f_i(v_i)\, di\right] \left[f_j(v_j)\, dj \right]\left[f_k(v_k)\, dk\right]$ e as direções são independentes, conforme cogitado inicialmente.
+
+
+
+\subsection{Percentual de partículas com velocidade suficiente para escape}
+
+Um conjunto de condições necessárias (mas não suficientes) para que uma molécula escape da atmosfera é que ela tenha (i) velocidade na direção $z$, (ii) sentido $+z$, e (iii) componente $v_z > v_{esc}$, sendo $v_{esc}$ a velocidade de escape. A probabilidade de uma molécula da atmosfera ter essa velocidade é obtida da \textbf{Equação (\ref{f_i})} como:
+
+$$P_s(v_z) = \int_{v_{esc}}^{\infty} f_z(v_z)dv_z$$
+
+\textcolor{red}{DESENVOLVER ESSA CONTA E CHEGAR NO RESULTADO}
+
+\textcolor{red}{PROBLEMA: É UMA INTEGRAL NÃO ELEMENTAR QUE DEPENDE DA FUNÇÃO ERRO}
+\textcolor{red}{talvez toda a minha abordagem esteja errada e seja melhor usar a distribuição do módulo das velocidades em conjunto com o ângulo do vetor.}
+\colorbox{yellow}{\textcolor{red}{dúvida que surgiu pensando nisso:}}
+\textcolor{red}{e essa abordagem do livre caminho? também me parece equivocada... porque, em uma casca de espessura igual ao livre caminho, considerando as partículas mais no interior dessa casca, só aquelas que têm velocidade vertical em uma faixa angular específica é que conseguem escapar?}
+\textcolor{red}{além disso, a velocidade média das partículas com velocidade suficiente é sempre maior que a velocidade média, mas esta última é usada no cálculo do livre caminho médio!}
+
+\colorbox{yellow}{\textcolor{red}{DESISTI OFICIAL TEMPORARIAMENTE DESSE PROBLEMA}}
+
+Vale ressaltar que, como a distribuição de posições é independente da distribuição de velocidades, a relação acima vale para qualquer altura da atmosfera.
+
+
+
+\subsection{Velocidade relativa média}
+
+$$\vec{v}_{rel} = \vec{v}_2 - \vec{v}_1$$
+$$\Leftrightarrow$$
+$$\vec{v}_{rel}\,^2 = (\vec{v}_2 - \vec{v}_1)^2 = \vec{v}_2\,^2+\vec{v}_1\,^2 - 2\vec{v}_1\cdot\vec{v}_2$$
+
+
+, onde $\vec{v}\,^2 = \vec{v}\cdot\vec{v}\,$ e $\cdot$ é o produto interno usual em $\mathbb{R}^3$.
+
+Tirando a média desta expressão e usando as propriedades da média, obtemos:
+
+\begin{align}
+\langle \vec{v}_{rel}\,^2 \rangle &= \langle \vec{v}_2\,^2+\vec{v}_1\,^2 - 2\vec{v}_1\cdot\vec{v}_2\rangle \notag \\
+&=\langle\vec{v}_2\,^2\rangle+\langle\vec{v}_1\,^2\rangle-2\langle\vec{v}_1\cdot\vec{v}_2\rangle
+\label{temp_vrel}
+\end{align}
+
+Para fazer a próxima passagem, vale esclarecer dois pontos. Primeiro, visto que $\vec{v}_1$ e $\vec{v}_2$ são instâncias da mesma variável aleatória, $\langle\vec{v}_1\,^2\rangle = \langle\vec{v}_2\,^2\rangle =\langle\vec{v}\,^2\rangle$. Segundo, como a distribuição de velocidades é isotrópica, temos que $\langle \vec{v}_1\cdot\vec{v}_2\rangle = 0$. Este último ponto, apesar de intuitivo, não consta nas notas de aula. Portanto, segue uma demonstração. Usando a definição de produto interno e a independência entre $\vec{v}_1$ e $\vec{v}_2$ (portanto, a independência entre suas respectivas coordenadas),
+
+$$\langle\vec{v}_1\cdot\vec{v}_2\rangle = 
+    \langle v_{1_x}\rangle \langle v_{2_x}\rangle + 
+    \langle v_{1_y} \rangle \langle v_{2_y}\rangle + \langle v_{1_z} \rangle\langle v_{2_z}\rangle$$
+
+Pela marginalização de $f(\vec{v})$ obtida na \textbf{Equação (\ref{f_i})}, foi constatado que cada coordenada tem mesma distribuição de probabilidades. Denotando por $i$ uma coordenada qualquer, a forma anterior fica:
+
+$$\langle\vec{v}_1\cdot\vec{v}_2\rangle = 3\langle v_i\rangle ^2$$
+
+Ainda remetendo àquele resultado, podemos calcular a média do lado direito como $\langle v_i \rangle = 0$, pois a \textbf{Equação (\ref{f_i})} descreve uma função par, que multiplicada pela função ímpar $v_i$ será antisimétrica em zero e terá integral de $-\infty$ a $\infty$ nula. (Aquela equação é em tudo semelhante a uma gaussiana centrada em zero, exceto por um fator de $2$ no denominador da potência, que não afeta o cálculo da média.)
+
+Juntando esses dois pontos ao passo \textbf{(\ref{temp_vrel})}, chega-se a:
+
+\begin{equation}
+    \langle \vec{v}_{rel}\,^2 \rangle = 2 \langle\vec{v}\,^2\rangle
+\label{temp_meds}
+\end{equation}
+
+A grandeza da direita consiste na velocidade quadrática média, para a qual temos a fórmula das notas de aula, dada por
+
+\begin{equation}
+    \langle\vec{v}\,^2\rangle=v_{rqm}^2=3\,\frac{k_BT}{m}
+\label{temp_vquad_med}
+\end{equation}
+
+As notas de aula também fornecem um cálculo da média do módulo da velocidade, que podemos deixar na forma quadrática:
+
+\begin{equation}
+    \langle v \rangle ^2 = \frac{8}{\pi}\frac{k_BT}{m}
+\label{temp_vmed_quad}
+\end{equation}
+
+Isolando o termo $k_BT/m$ e substituindo \textbf{(\ref{temp_vquad_med})} em \textbf{(\ref{temp_vmed_quad})}, obtém-se:
+
+$$\langle\vec{v}\,^2\rangle = \frac{3\pi}{8} \langle v \rangle ^2$$
+
+\textcolor{red}{\colorbox{yellow}{NÃO CONSIGO DEMONSTRAR A AFIRMAÇÃO ABAIXO}}
+\par
+\textcolor{red}{\colorbox{yellow}{NEM SEI SE ESTÁ CORRETA ESSA DISTRIBUIÇÃO CONJUNTA}}
+
+A mesma relação entre as médias do módulo e da velocidade quadrática se aplica à velocidade relativa. Isso porque a velocidade relativa, tendo uma distribuição conjunta de probabilidades de dois vetores aleatórios estatisticamente independentes, que chamo $P(\vec{v}_{rel})$, obedece à relação $P(\vec{v}_{rel})=f(\vec{v}_1)f(\vec{v}_2)$. Assim, seu valor esperado é dado por
+
+\begin{align}
+    \langle\vec{v}_{rel}\rangle &= \int \vec{v}_{rel}P(\vec{v}_{rel}) \,d^6 \vec{v} \notag \\ 
+    &= \int (\vec{v}_2-\vec{v}_1)\,f(\vec{v}_1)f(\vec{v}_2)\,d^3\vec{v}_2\,d^3\vec{v}_1 \notag \\
+    &= \int \vec{v}_2 f(\vec{v}_1)f(\vec{v}_2)\,d^3\vec{v}_2\,d^3\vec{v}_1-\int\vec{v}_1 f(\vec{v}_1)f(\vec{v}_2)\,d^3\vec{v}_2\,d^3\vec{v}_1
+\label{temp_v_rel}
+\end{align}
+
+A velocidade quadrática é equivalente ao quadrado do módulo. Por isso, convém expressá-la em termos da distribuiçao de $v_{rel}$, cuja obtenção é análoga à da distribuição do módulo das velocidades obtida nas notas de aula, dada por
+
+\begin{equation}
+    f_v(v)\,dv = 4\pi\left(\frac{m}{2\pi k_BT}\right)^{\frac{3}{2}}v^2e^{-\frac{mv^2}{2k_BT}}dv
+    \label{Mx_mod}
+\end{equation}
+
+Usando \textbf{(\ref{Mx_mod})} em \textbf{(\ref{temp_v_rel})}, e usando o fato de que $f_v$ é uma distribuição de probabilidades (portanto sua integral em todo o domínio é $1$):
+
+\begin{align}
+    \langle v_{rel} \rangle &= \int v_2 f_v(v_2) f_v(v_1) dv_1 dv_2 - \int v_1 f_v(v_2) f_v(v_1) dv_2 dv_1 \notag \\
+    &= \int f_v(v_1) dv_1 \int v_2 f_v(v_2) dv_2 - \int f_v(v_2) dv_2 \int v_1 f_v(v_1) dv_1 \notag \\
+    &= 1 \cdot \int v_2 f_v(v_2) dv_2 - 1 \cdot \int v_1 f_v(v_1) dv_1 \notag \\
+    &= \langle v_2 \rangle - \langle v_1 \rangle \notag \\
+    &= \sqrt{\frac{8}{\pi}\frac{k_BT}{m}} - \sqrt{\frac{8}{\pi}\frac{k_BT}{m}} \notag \\
+    &= 0
+\end{align}
+
+\colorbox{yellow}{\textcolor{red}{DÁ ZEROOOOOO}}
+
+\colorbox{yellow}{\textcolor{red}{SOLUÇÃO ALTERNATIVA PROVISÓRIA:}}
+
+Notando que
+
+
+
+\subsection{Livre caminho médio}
+
+\subsection{Altura total em função do número de moléculas}
+
+Uma hipótese adicional importante para o presente exercício é a de que a densidade numérica de moléculas na atmosfera não varia com o número total de moléculas. Em outras palavras, a densidade superficial $n_0$ se mantém constante mesmo perante a perda de moléculas na atmosfera com o tempo. Essa hipótese pode não ser iteiramente realista porque a coluna de ar acima da superfície exerce pressão sobre o ar abaixo, o que implica que, à medida que moléculas são perdidas, a pressão no solo decaia e, constante $T$, o volume médio ocupado por uma única molécula aumente.
+
+\textcolor{red}{pensar se é possível relaxar essa hipótese}
+
+Porém, essa hipótese nos permite adaptar a \textbf{Equação (\ref{N_a_b})} para o caso em que $a=0$ e $b=h$, chegando a uma fórmula para o número de moléculas dada uma atmosfera com altura $h$:
+
+$$N(h)= n_0A\frac{k_BT}{mg}\left(1-e^{-\frac{mg}{k_BT}h}\right)$$
+
+Isolando $h$, é possível obter uma fórmula para a altura de uma atmosfera com $N$ moléculas:
+
+\begin{align*}
+    &\Leftrightarrow \frac{Nmg}{n_0Ak_BT} = 1 - e^{-\frac{mg}{k_BT}h} \\
+    &\Leftrightarrow e^{-\frac{mg}{k_BT}h} = 1 -  \frac{Nmg}{n_0Ak_BT} \\
+    &\Leftrightarrow -\frac{mg}{k_BT}h = \ln\left(1 -  \frac{Nmg}{n_0Ak_BT}\right) \\
+    &\Leftrightarrow h = -\frac{k_BT}{mg}\ln\left(1 -  \frac{Nmg}{n_0Ak_BT}\right)
+\end{align*}
+
+Como $h$ é positivo, convém deixar essa relação no formato abaixo:
+
+\begin{equation}
+    \boxed{
+        \, \, h(N)=\frac{k_BT}{mg}\ln\left(\frac{n_0Ak_BT}{n_0Ak_BT-Nmg}\right) \,\,
+    }
+\end{equation}
+
+\textcolor{red}{me certificar de que eu posso tirar o ln, se não tem numero negativo no argumento}
+
+\subsection{Constantes e resultados numéricos}
+
+$g$
+diâmetro molecular médio
+raio da Terra
+$N$: desprezar volume ocupado pelos continentes acima do nível do mar? ou contabilizá-lo de alguma forma?
+$v_esc$
+
+$mg/k_BT$ (vou precisar disso calculado em cada passo da simulação)
+
+
+
+
+
+
+
+...
+
+
+\dots
+
+\dots
+
+\dots
+
+\dots
+
+
+\textcolor{red}{calma, p tem que ser a probabilidade de achar uma partícula!}
+
+Porém, a distância entre moléculas não segue a mesma lógica de uma partição do espaço em cubos, pois é radial (esférica). Por exemplo, se considerarmos a distância entre uma molécula no centro de um cubo de volume elementar e outra molécula em um cubo que lhe é diagonal, a distância já não é $dl$, mas $\sqrt{2}\,dl$ ou $\sqrt{3}\, dl$.
+
+Se quisermos saber a probabilidade $p$ de haver $N$ moléculas em dado volume infinitesimal $dV$, basta fazer $n \, dV$. O interesse reside no volume de uma casca esférica de altura radial $dr$ e área inferior $4\pi r^2$, logo $dV\!=\!4\pi r^2 \, dr$. Vamos considerar a detecção de uma única molécula como sucesso e a falha em detectar uma molécula como fracasso.
+
+Fazendo uma partição do espaço ao redor de uma molécula em cascas esféricas consecutivas, cada uma com altura inicial $r$ e final $r+dr$, na situação em que $dr\rightarrow 0 \Rightarrow p\rightarrow 0$, temos um processo de Poisson espacial, onde $\lambda = n$ e o número de moléculas detectadas é 
+
+
+
+
+
+. Como a densidade é uniforme, deve ser verdade que
+
+$$p=\frac{N}{V} dV$$
+
+
+\textcolor{red}{não to dando conta desse tópico}
+
+$$\langle r \rangle = dz $$ 
+
+
+
+
+Nota-se que em toda essa aproximação tomei como hipótese que o diâmetro da molécula é desprezível ante a distância intermolecular média. \textcolor{red}{justificar}
+
+
+
+\subsection{Distribuição e valor esperado das velocidades suficientes}
+
+A função erro é monotônica e respeita $\text{erf(0)}\!=\!0 < \text{erf(x)}\!<\!1\!=\!\text{erf}(\infty)$ no intervalo $(0,+\infty)$.  Assim, visto que $P_s$ é não-nulo e que $v_{\text{esc}}\!\in\!\mathbb{R}$ (portanto $<\!\infty$), e considerando ainda que a distribuição de Maxwell é contínua, fica claro que as moléculas com velocidade suficiente têm sua própria distribuição de probabilidades $S(v_z)$ também contínua, que tem o mesmo formato da distribuição $f_z(v_z)$ no intervalo ($v_{\text{esc}}\,$, $\infty$).
+
+Isso indica que, para descobrir essa distribuição, basta fazer uma renormalização definida somente nesta região. Seja $B$ uma constante de normalização, $B P_s = 1 \Leftrightarrow B = 1 / P_s$, e então a distribuição é:
+
+\begin{equation}
+    S(v_z) \, dv_z = 
+    \begin{cases} 
+        \displaystyle\frac{1}{P_s} \sqrt{\frac{m}{2\pi k_BT}} \, \, e^{-\frac{m}{2k_BT}v_z^2} \, dv_z & \text{se } v_z \geq v_\text{esc} \\
+        \\[-2mm]
+        \quad\quad\quad\quad\quad\quad\quad 0 & \text{se } v_z < v_\text{esc}
+    \end{cases} \notag
+\end{equation}
+
+De posse da distribuição, é possível calcular seu valor esperado:
+
+\begin{align}
+    \langle v_s \rangle &= \frac{1}{P_s} \sqrt{\frac{m}{2\pi k_BT}}  \int_{v_\text{esc}}^{\infty} v_z \, e^{-\frac{m}{2k_BT}v_z^2} \, dv_z \notag \\
+    &= \frac{1}{P_s} \sqrt{\frac{m}{2\pi k_BT}} \left(-\frac{k_BT}{m}\right) \int_{v_z=v_\text{esc}}^{\infty} e^u \, du\quad\text{, onde } u = -\frac{m}{2k_BT}\,v_z^2 \notag \\
+    & \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \text{ e } du = -\frac{m}{k_BT} \, v_z \, dv_z \notag \\
+    &= -\frac{1}{P_s} \sqrt{\frac{k_BT}{2\pi m}} \, \, \, \left. e^{-\frac{m}{2K_BT}\,v_z^2} \right|_{v_\text{esc}}^\infty \notag \\
+    &= -\frac{1}{P_s} \sqrt{\frac{k_BT}{2\pi m}} \left[ 0 - e^{-\frac{m}{2K_BT}\,v_\text{esc}^2}\right] \notag
+\end{align}
+, que podemos simplificar para:
+
+\begin{equation}
+    \boxed{
+        \, \, \langle v_s \rangle = \frac{1}{P_s} \sqrt{\frac{k_BT}{2\pi m}} e^{-\frac{m}{2K_BT}\,v_{\text{esc}}^2} \, \, 
+    }
+\end{equation}
+
+Vale notar que esta é a média apenas da componente $z$ do vetor velocidade.
+
+
+
+\end{document}
